@@ -20,6 +20,12 @@ const getSmartImageUrl = (url: string, v: string = '1', w: number = 400, h: numb
 const ANISH_AVATAR = "https://lh3.googleusercontent.com/d/1m_I0IqOX8WtxfMJP1dL2qAxVfpKnAROE";
 const DEBU_AVATAR = "https://lh3.googleusercontent.com/d/14o-9uKeKJVy9aa0DPMCFA43vP0vJPGM3";
 
+interface EpisodeGoal {
+  epId: number;
+  goal: string;
+  steps: string[];
+}
+
 const SERIES_CATALOG = [
   {
     id: 'startup-boy-anish',
@@ -29,11 +35,11 @@ const SERIES_CATALOG = [
     avatars: { Anish: ANISH_AVATAR },
     thumbnail: getSmartImageUrl("https://lh3.googleusercontent.com/d/1FKR6HevmeSv1baTCUtfi5CWQo8FO0QAf", "anish_v2", 800, 800),
     episodes: [
-      { id: 1, title: "The First Step", subtitle: "Fundraising & Grants", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep1.mp4", chatGoal: "Set 30-Day Goal" },
-      { id: 2, title: "Founder Dynamics", subtitle: "CEO/CTO Roles & Partners", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep2.mp4", chatGoal: "Break into Steps" },
-      { id: 3, title: "The AI Moat", subtitle: "Beating Gemini & OpenAI", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep3.mp4", chatGoal: "Define Defensibility" },
-      { id: 4, title: "Idea Stress Test", subtitle: "The Real Talk", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep4.mp4", chatGoal: "Refine Concept" },
-      { id: 5, title: "Scale or Pivot", subtitle: "Team Building Logic", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep5.mp4", chatGoal: "Final Scalability Plan" }
+      { id: 1, title: "The First Step", subtitle: "Fundraising & Grants", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep1.mp4", chatGoal: "MVP Readiness Plan", task: "Assess readiness. Propose 3-4 clear milestones for their MVP. Ask for agreement." },
+      { id: 2, title: "Founder Dynamics", subtitle: "CEO/CTO Roles & Partners", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep2.mp4", chatGoal: "Role & Synergy Split", task: "Define CEO/CTO split. Propose ownership areas (Tech, Product, Sales). Get agreement." },
+      { id: 3, title: "The AI Moat", subtitle: "Beating Gemini & OpenAI", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep3.mp4", chatGoal: "Defensibility Moat", task: "Stress-test the idea. Propose 'Moat' milestones (Data, UX, Distribution). Get agreement." },
+      { id: 4, title: "Execution Plan", subtitle: "Tactical Implementation", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep4.mp4", chatGoal: "7-Day Tactical Sprint", task: "Build a sprint. Propose Daily Deliverables for the next 7 days. Get agreement." },
+      { id: 5, title: "Scale or Pivot", subtitle: "The Final Verdict", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep5.mp4", chatGoal: "Growth Roadmap", task: "Scale logic. Propose 3 major scaling hurdles and how to clear them. Get agreement." }
     ]
   },
   {
@@ -44,11 +50,11 @@ const SERIES_CATALOG = [
     avatars: { Debu: DEBU_AVATAR },
     thumbnail: getSmartImageUrl("https://lh3.googleusercontent.com/d/1BGjtlHgMy4BToZJQ-eOhr-UpH82LOMVh", "deb_v2", 800, 800),
     episodes: [
-      { id: 1, title: "The Visionary Eye", subtitle: "Finding the Lens", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode1_Debu.mp4", chatGoal: "Set Vision" },
-      { id: 2, title: "The Storyboard", subtitle: "Visual Pacing", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode2_Debu.mp4", chatGoal: "Break Scenes" },
-      { id: 3, title: "Shadow & Light", subtitle: "Emotional Lighting", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode3_Debu.mp4", chatGoal: "Design Lighting Mood" },
-      { id: 4, title: "The Edit", subtitle: "Final Cut Logic", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode4_Debu.mp4", chatGoal: "Review Sequence" },
-      { id: 5, title: "Premiere Day", subtitle: "Distribution Strategy", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode5_Debu.mp4", chatGoal: "Final Release Plan" }
+      { id: 1, title: "The Visionary Eye", subtitle: "Finding the Lens", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode1_Debu.mp4", chatGoal: "Creative Vision Lock", task: "Propose 3 elements of their 'Cinematic Soul'. Ask for agreement." },
+      { id: 2, title: "The Storyboard", subtitle: "Visual Pacing", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode2_Debu.mp4", chatGoal: "Visual Pacing Roadmap", task: "Propose 3-4 key visual beats for their story. Ask for agreement." },
+      { id: 3, title: "Shadow & Light", subtitle: "Emotional Lighting", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode3_Debu.mp4", chatGoal: "Lighting Design Palette", task: "Propose a specific lighting 'Mood Palette'. Ask for agreement." },
+      { id: 4, title: "The Edit", subtitle: "Final Cut Logic", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode4_Debu.mp4", chatGoal: "Edit Philosophy Lock", task: "Propose 3 rules for their edit room. Ask for agreement." },
+      { id: 5, title: "Premiere Day", subtitle: "Distribution Strategy", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode5_Debu.mp4", chatGoal: "Global Release Plan", task: "Propose 3 phases of distribution. Ask for agreement." }
     ]
   }
 ];
@@ -143,13 +149,18 @@ const ReelItem: React.FC<{
 const App: React.FC = () => {
   const [isSplash, setIsSplash] = useState(true);
   const [view, setView] = useState<'discover' | 'profile'>('discover');
+  const [profileTab, setProfileTab] = useState<'chapters' | 'goals'>('chapters');
   const [selectedSeries, setSelectedSeries] = useState<any>(null);
   const [chatData, setChatData] = useState<any>(null);
   const [activeEpisode, setActiveEpisode] = useState<any>(null);
+  
   const [userProgress, setUserProgress] = useState<Record<string, number>>({
     'startup-boy-anish': 1,
     'deb-filmmaker': 1
   });
+  const [userGoals, setUserGoals] = useState<Record<string, EpisodeGoal[]>>({});
+  const [streak, setStreak] = useState(3);
+  const [rank, setRank] = useState(12);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsSplash(false), 2000);
@@ -161,6 +172,7 @@ const App: React.FC = () => {
   const handleSeriesSelect = (series: any) => {
     setSelectedSeries(series);
     setView('profile');
+    setProfileTab('chapters');
   };
 
   const openChat = (ep: any) => {
@@ -168,7 +180,8 @@ const App: React.FC = () => {
       char: selectedSeries.influencer,
       intro: `Masterclass Chapter complete. Now, let's execute. Ready for "${ep.chatGoal}"?`,
       hook: ep.chatGoal,
-      episodeId: ep.id
+      episodeId: ep.id,
+      task: ep.task
     });
   };
 
@@ -227,59 +240,137 @@ const App: React.FC = () => {
                <button onClick={() => setView('discover')} className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-3xl hover:bg-white/10 transition-colors active:scale-90">
                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-5 h-5"><path d="M15 19l-7-7 7-7" /></svg>
                </button>
-               <div className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+               <div className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20">
                  <p className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-400">Chapter {getProg(selectedSeries.id)} / {selectedSeries.episodes.length}</p>
                </div>
              </div>
 
+             {/* STATS BAR */}
+             <div className="flex gap-4 p-4 bg-white/5 rounded-[2.5rem] border border-white/10 backdrop-blur-3xl shadow-2xl">
+                <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-orange-500/10 border border-orange-500/20 cursor-pointer active:scale-95 transition-all">
+                   <div className="flex items-center gap-2 mb-1">
+                      <span className="text-orange-500">🔥</span>
+                      <span className="text-xl font-black italic">{streak}</span>
+                   </div>
+                   <p className="text-[8px] font-black uppercase tracking-widest text-orange-500/60">STREAK</p>
+                </div>
+                <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-blue-500/10 border border-blue-500/20 cursor-pointer active:scale-95 transition-all">
+                   <div className="flex items-center gap-2 mb-1">
+                      <span className="text-blue-400">🏆</span>
+                      <span className="text-xl font-black italic">#{rank}</span>
+                   </div>
+                   <p className="text-[8px] font-black uppercase tracking-widest text-blue-400/60">GLOBAL</p>
+                </div>
+                <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-emerald-500/10 border border-emerald-500/20 cursor-pointer active:scale-95 transition-all">
+                   <div className="flex items-center gap-2 mb-1">
+                      <span className="text-emerald-400">🎯</span>
+                      <span className="text-xl font-black italic">{Math.round(currentProgPercent)}%</span>
+                   </div>
+                   <p className="text-[8px] font-black uppercase tracking-widest text-emerald-400/60">PROGRESS</p>
+                </div>
+             </div>
+
              <div className="bg-gradient-to-br from-white/10 to-transparent p-12 rounded-[4.5rem] border border-white/10 shadow-3xl text-center relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 blur-[80px] -mr-24 -mt-24 pointer-events-none group-hover:bg-blue-500/20 transition-all duration-700" />
-                <img src={selectedSeries.avatars[selectedSeries.influencer]} className="w-36 h-36 rounded-full mx-auto border-4 border-white mb-8 shadow-4xl object-cover hover:scale-105 transition-transform duration-500" />
-                <h2 className="text-4xl font-black italic uppercase tracking-tighter mb-2">{selectedSeries.influencer}</h2>
-                <p className="text-sm text-white/40 mb-10 font-medium italic">Active Goal: {selectedSeries.episodes.find((e: any) => e.id === getProg(selectedSeries.id))?.title}</p>
+                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 blur-[80px] -mr-24 -mt-24 pointer-events-none" />
+                <img src={selectedSeries.avatars[selectedSeries.influencer]} className="w-32 h-32 rounded-full mx-auto border-4 border-white mb-6 shadow-4xl object-cover" />
+                <h2 className="text-4xl font-black italic uppercase tracking-tighter mb-1">{selectedSeries.influencer}</h2>
+                <p className="text-[10px] text-white/40 mb-8 font-black uppercase tracking-widest">{selectedSeries.title}</p>
                 <button 
                   onClick={() => setActiveEpisode(selectedSeries.episodes.find((e: any) => e.id === getProg(selectedSeries.id)))}
-                  className="w-full py-7 rounded-[3rem] bg-white text-black text-[13px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-blue-500 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-4 group"
+                  className="w-full py-6 rounded-[2.5rem] bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-blue-500 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-4"
                 >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 group-hover:scale-110 transition-transform"><path d="M8 5v14l11-7z" /></svg>
-                  Play Chapter
+                  Play Active Chapter
                 </button>
              </div>
 
-             <div className="space-y-6">
-                <div className="flex items-center justify-between px-2 mb-4">
-                   <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/20">Learning Map</p>
-                   <div className="h-[1px] flex-1 bg-white/5 mx-6" />
-                </div>
-                {selectedSeries.episodes.map((ep: any) => {
-                  const isCompleted = ep.id < getProg(selectedSeries.id);
-                  const isCurrent = ep.id === getProg(selectedSeries.id);
-                  const isLocked = ep.id > getProg(selectedSeries.id);
-
-                  return (
-                    <div 
-                      key={ep.id} 
-                      onClick={() => !isLocked && setActiveEpisode(ep)}
-                      className={`group flex items-center gap-6 p-6 rounded-[2.5rem] border transition-all duration-500 relative overflow-hidden ${isCurrent ? 'bg-white/10 border-blue-500/50 scale-[1.02] shadow-2xl' : 'bg-transparent border-white/5'} ${isLocked ? 'opacity-20 grayscale cursor-not-allowed' : 'opacity-100 hover:bg-white/10 cursor-pointer active:scale-[0.98]'}`}
-                    >
-                      {/* Play Hover Overlay */}
-                      {!isLocked && (
-                        <div className="absolute right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-blue-500"><path d="M8 5v14l11-7z" /></svg>
-                        </div>
-                      )}
-
-                      <div className={`w-14 h-14 rounded-[1.8rem] flex items-center justify-center font-black italic text-2xl border-2 transition-all duration-500 ${isCompleted ? 'bg-blue-500 border-blue-400 text-white shadow-[0_0_15px_#3b82f6]' : isCurrent ? 'border-blue-500 text-blue-400 animate-pulse' : 'border-white/10 text-white/20'}`}>
-                        {isCompleted ? '✓' : isLocked ? '🔒' : ep.id}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isCurrent ? 'text-blue-400' : 'text-white/30'}`}>{ep.subtitle}</h4>
-                        <p className="text-lg font-bold italic tracking-tight leading-tight">{ep.title}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+             <div className="flex bg-white/5 p-1.5 rounded-full border border-white/10">
+                <button 
+                  onClick={() => setProfileTab('chapters')}
+                  className={`flex-1 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${profileTab === 'chapters' ? 'bg-white text-black shadow-lg' : 'text-white/40'}`}
+                >
+                  Chapters
+                </button>
+                <button 
+                  onClick={() => setProfileTab('goals')}
+                  className={`flex-1 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${profileTab === 'goals' ? 'bg-white text-black shadow-lg' : 'text-white/40'}`}
+                >
+                  My Goals
+                </button>
              </div>
+
+             {profileTab === 'chapters' ? (
+                <div className="space-y-6">
+                  {selectedSeries.episodes.map((ep: any) => {
+                    const isCompleted = ep.id < getProg(selectedSeries.id);
+                    const isCurrent = ep.id === getProg(selectedSeries.id);
+                    const isLocked = ep.id > getProg(selectedSeries.id);
+
+                    return (
+                      <div 
+                        key={ep.id} 
+                        onClick={() => !isLocked && setActiveEpisode(ep)}
+                        className={`group flex items-center gap-6 p-6 rounded-[2.5rem] border transition-all duration-500 relative overflow-hidden ${isCurrent ? 'bg-white/10 border-blue-500/50 scale-[1.02] shadow-2xl' : 'bg-transparent border-white/5'} ${isLocked ? 'opacity-20 grayscale cursor-not-allowed' : 'opacity-100 hover:bg-white/10 cursor-pointer'}`}
+                      >
+                        <div className={`w-14 h-14 rounded-[1.8rem] flex items-center justify-center font-black italic text-2xl border-2 transition-all duration-500 ${isCompleted ? 'bg-blue-500 border-blue-400 text-white shadow-[0_0_10px_#3b82f6]' : isCurrent ? 'border-blue-500 text-blue-400 animate-pulse' : 'border-white/10 text-white/20'}`}>
+                          {isCompleted ? '✓' : isLocked ? '🔒' : ep.id}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isCurrent ? 'text-blue-400' : 'text-white/30'}`}>{ep.subtitle}</h4>
+                          <p className="text-lg font-bold italic tracking-tight leading-tight">{ep.title}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+             ) : (
+                <div className="space-y-8 animate-fade-in pb-10">
+                  <div className="bg-blue-500/5 border border-blue-500/20 p-8 rounded-[3.5rem] shadow-inner backdrop-blur-md">
+                     <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-8 border-b border-white/10 pb-4">Personal Roadmap</h4>
+                     <div className="relative pl-8 space-y-12 border-l-2 border-white/10">
+                        {selectedSeries.episodes.map((ep: any) => {
+                           const goalData = userGoals[selectedSeries.id]?.find(g => g.epId === ep.id);
+                           const isCompleted = ep.id < getProg(selectedSeries.id);
+                           const isCurrent = ep.id === getProg(selectedSeries.id);
+
+                           return (
+                             <div key={ep.id} className="relative">
+                                <div className={`absolute -left-[41px] top-0 w-4 h-4 rounded-full border-2 transition-all duration-700 ${isCompleted ? 'bg-blue-500 border-blue-400 shadow-[0_0_10px_#3b82f6]' : isCurrent ? 'bg-white border-blue-500 animate-pulse' : 'bg-black border-white/20'}`} />
+                                
+                                <div className="flex flex-col gap-4">
+                                  <div className="flex items-center justify-between">
+                                    <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${isCompleted ? 'text-blue-400' : isCurrent ? 'text-white' : 'text-white/20'}`}>
+                                       Chapter {ep.id}: {ep.chatGoal}
+                                    </p>
+                                    {isCompleted && <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-black uppercase tracking-widest">Locked</span>}
+                                  </div>
+                                  
+                                  {goalData ? (
+                                    <div className="space-y-4">
+                                      <div className="bg-white/5 p-5 rounded-[1.5rem] border border-white/5">
+                                        <p className="text-sm font-bold italic text-white/90">"{goalData.goal}"</p>
+                                      </div>
+                                      <div className="grid gap-2 pl-4">
+                                         {goalData.steps.map((step, si) => (
+                                           <div key={si} className="flex items-center gap-3">
+                                              <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                              <p className="text-[11px] font-medium text-white/60">{step}</p>
+                                           </div>
+                                         ))}
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="bg-black/20 p-5 rounded-[1.5rem] border border-dashed border-white/10">
+                                      <p className="text-[10px] font-black uppercase tracking-widest text-white/10">Unlock this chapter to set goals</p>
+                                    </div>
+                                  )}
+                                </div>
+                             </div>
+                           );
+                        })}
+                     </div>
+                  </div>
+                </div>
+             )}
            </div>
         </main>
       )}
@@ -311,24 +402,36 @@ const App: React.FC = () => {
           instantGreeting={chatData.intro} 
           initialHook={chatData.hook}
           episodeId={chatData.episodeId}
-          onClose={() => {
+          onClose={(goalStr?: string, stepsArr?: string[]) => {
             const finishedId = chatData.episodeId;
             setChatData(null);
             
-            // AUTOMATICALLY MOVE TO NEXT EPISODE
+            if (goalStr) {
+               setUserGoals(prev => {
+                  const sId = selectedSeries.id;
+                  const current = prev[sId] || [];
+                  const existing = current.findIndex(g => g.epId === finishedId);
+                  const newList = [...current];
+                  const newEntry: EpisodeGoal = { epId: finishedId, goal: goalStr, steps: stepsArr || [] };
+                  if (existing !== -1) newList[existing] = newEntry;
+                  else newList.push(newEntry);
+                  return { ...prev, [sId]: newList };
+               });
+            }
+
             const nextEp = selectedSeries.episodes.find((e: any) => e.id === finishedId + 1);
             if (nextEp) {
               setActiveEpisode(nextEp);
             }
           }}
           onProgressUpdate={() => {
-            // Only progress the global counter if we just finished the CURRENT chapter
             const currentProg = getProg(selectedSeries.id);
             if (chatData.episodeId === currentProg) {
               setUserProgress(prev => ({ 
                 ...prev, 
                 [selectedSeries.id]: Math.min(currentProg + 1, selectedSeries.episodes.length) 
               }));
+              setStreak(s => s + 1);
             }
           }}
         />
