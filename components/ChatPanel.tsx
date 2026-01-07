@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -31,17 +32,22 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
   useEffect(() => {
     if (character === 'Anish') {
       const prompts = [
-        `You are Anish, founder coach. Episode 1 just discussed Fundraising & Grants. TASK: Help user set a clear, high-agency 30-day MVP goal. Be aggressive. When happy, say "GOAL LOCKED".`,
-        `You are Anish. Episode 2 discussed Roles (CEO/CTO) and finding a Partner. TASK: Break the goal into 5 tactical steps. Challenge their co-founder strategy. When agreed, say "STEPS LOCKED".`,
-        `You are Anish. Episode 3 discussed the AI Moat vs OpenAI/Gemini. TASK: Find user's defensibility. Why won't big tech kill them? When agreed, say "MOAT DEFINED".`,
-        `You are Anish. Episode 4 was an Idea Stress Test. TASK: Deep dive into their idea. Ask 3 brutal questions about execution. When they answer well, say "CONCEPT REFINED".`,
-        `You are Anish. Episode 5 discussed Pivot logic and Team building. TASK: Finalize a scalability plan and first hire profile. When done, say "READY TO SCALE".`
+        `You are Anish. Ep 1: Fundraising/Grants. TASK: User needs a 30-day MVP goal. Be high-agency. When happy, say "GOAL LOCKED".`,
+        `You are Anish. Ep 2: Roles & Co-founders. TASK: Break the goal into 5 weekly steps. Adjust for roles. When agreed, say "STEPS LOCKED".`,
+        `You are Anish. Ep 3: Moats vs AI Giants. TASK: Define defensibility. Why will user survive? When agreed, say "MOAT DEFINED".`,
+        `You are Anish. Ep 4: Idea Stress Test. TASK: Ask 3 brutal questions about execution. When they pass, say "IDEA REFINED".`,
+        `You are Anish. Ep 5: Team & Pivot Logic. TASK: Finalize scale plan and first hire. When done, say "READY TO SCALE".`
       ];
-      systemPrompt.current = (prompts[episodeId - 1] || prompts[0]) + " MAX 30 words. Hinglish is fine. Stay in character.";
+      systemPrompt.current = (prompts[episodeId - 1] || prompts[0]) + " MAX 30 words. Hinglish is great. Stay in character.";
     } else {
-      systemPrompt.current = `You are Debu, filmmaking master. Guide the user through the current production phase. When done, say "CHAPTER SYNCED". MAX 30 words.`;
+      systemPrompt.current = `You are Debu. Guide user through Episode ${episodeId} vision. When happy, say "CHAPTER SYNCED". MAX 30 words.`;
     }
   }, [character, episodeId]);
+
+  const handleSkip = () => {
+    onProgressUpdate?.();
+    onClose();
+  };
 
   const handleSend = async () => {
     if (!inputValue.trim() || isTyping || isComplete) return;
@@ -64,16 +70,16 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
       setMessages(prev => [...prev, { role: 'assistant', content: aiText, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
       setSessionProgress(prev => Math.min(prev + 20, 95));
 
-      const triggers = ["GOAL LOCKED", "STEPS LOCKED", "MOAT DEFINED", "CONCEPT REFINED", "READY TO SCALE", "CHAPTER SYNCED"];
+      const triggers = ["GOAL LOCKED", "STEPS LOCKED", "MOAT DEFINED", "IDEA REFINED", "READY TO SCALE", "CHAPTER SYNCED"];
       if (triggers.some(t => aiText.toUpperCase().includes(t))) {
         setSessionProgress(100);
         setTimeout(() => {
           setIsComplete(true);
           onProgressUpdate?.();
-        }, 1500);
+        }, 1200);
       }
     } catch (e) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "Network jitter. One more time?", time: "Now" }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: "Lag. Say again?", time: "Now" }]);
     } finally { setIsTyping(false); }
   };
 
@@ -82,7 +88,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
       <div className="relative z-10 bg-[#f0f2f5] border-b border-gray-300 shadow-sm overflow-hidden">
         <div className="absolute top-0 left-0 h-[3px] bg-blue-500 transition-all duration-1000 z-20" style={{ width: `${sessionProgress}%` }} />
         <div className="flex items-center gap-4 px-5 py-4">
-          <button onClick={onClose} className="p-2 -ml-2 hover:bg-gray-200 rounded-full">
+          <button onClick={onClose} className="p-2 -ml-2 hover:bg-gray-200 rounded-full transition-colors">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className="text-[#54656f]"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
           </button>
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-lg">
@@ -90,8 +96,17 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <h4 className="text-[17px] font-black text-[#111b21] uppercase italic tracking-tighter leading-tight">{character}</h4>
-            <p className="text-[11px] text-[#00a884] font-black uppercase tracking-[0.2em]">{initialHook}</p>
+            <p className="text-[11px] text-[#00a884] font-black uppercase tracking-[0.2em] truncate">{initialHook}</p>
           </div>
+          {/* Skip Option in Chat Window */}
+          {!isComplete && (
+            <button 
+              onClick={handleSkip}
+              className="px-4 py-2 rounded-full bg-white/50 border border-gray-300 text-[10px] font-black uppercase tracking-widest text-[#54656f] hover:bg-white active:scale-90 transition-all"
+            >
+              Skip
+            </button>
+          )}
         </div>
       </div>
 
@@ -104,7 +119,12 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
             </div>
           </div>
         ))}
-        {isTyping && <div className="self-start bg-white px-5 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-2"><div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" /><div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75" /></div>}
+        {isTyping && (
+          <div className="self-start bg-white px-5 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-2">
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75" />
+          </div>
+        )}
       </div>
 
       {isComplete && (
@@ -112,7 +132,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
            <div className="w-full max-w-sm bg-white rounded-[4rem] p-12 text-center shadow-4xl animate-slide-up">
               <div className="w-20 h-20 rounded-full bg-blue-500 mx-auto flex items-center justify-center text-white text-4xl mb-6 shadow-xl animate-pulse">✓</div>
               <h3 className="text-2xl font-black italic uppercase text-black mb-2 leading-tight">Mastery Synced</h3>
-              <p className="text-sm text-gray-500 mb-8 font-bold italic">Chapter {episodeId} Complete</p>
+              <p className="text-sm text-gray-500 mb-8 font-bold italic">Episode {episodeId} Complete</p>
               <button onClick={onClose} className="w-full py-5 rounded-[2.5rem] bg-black text-white text-[11px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all">Next Episode Unlocked</button>
            </div>
         </div>
@@ -120,7 +140,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
 
       {!isComplete && (
         <div className="relative z-10 bg-[#f0f2f5] px-4 py-5 flex items-center gap-4 pb-safe">
-          <div className="flex-1 bg-white rounded-full flex items-center px-7 py-3.5 shadow-inner">
+          <div className="flex-1 bg-white rounded-full flex items-center px-7 py-3.5 shadow-inner border border-gray-200">
             <input 
               type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} 
               placeholder="Lock strategy..." className="flex-1 text-[16px] outline-none text-[#111b21] bg-transparent font-bold" 
