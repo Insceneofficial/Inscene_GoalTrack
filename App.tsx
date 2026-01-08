@@ -20,10 +20,17 @@ const getSmartImageUrl = (url: string, v: string = '1', w: number = 400, h: numb
 const ANISH_AVATAR = "https://lh3.googleusercontent.com/d/1m_I0IqOX8WtxfMJP1dL2qAxVfpKnAROE";
 const DEBU_AVATAR = "https://lh3.googleusercontent.com/d/14o-9uKeKJVy9aa0DPMCFA43vP0vJPGM3";
 
-interface EpisodeGoal {
-  epId: number;
-  goal: string;
-  steps: string[];
+interface Milestone {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
+interface ProjectGoal {
+  title: string;
+  milestones: Milestone[];
+  startDate: string;
+  overallProgress: number;
 }
 
 const SERIES_CATALOG = [
@@ -35,11 +42,11 @@ const SERIES_CATALOG = [
     avatars: { Anish: ANISH_AVATAR },
     thumbnail: getSmartImageUrl("https://lh3.googleusercontent.com/d/1FKR6HevmeSv1baTCUtfi5CWQo8FO0QAf", "anish_v2", 800, 800),
     episodes: [
-      { id: 1, title: "The First Step", subtitle: "Fundraising & Grants", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep1.mp4", chatGoal: "MVP Readiness Plan", task: "Assess readiness. Propose 3-4 clear milestones for their MVP. Ask for agreement." },
-      { id: 2, title: "Founder Dynamics", subtitle: "CEO/CTO Roles & Partners", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep2.mp4", chatGoal: "Role & Synergy Split", task: "Define CEO/CTO split. Propose ownership areas (Tech, Product, Sales). Get agreement." },
-      { id: 3, title: "The AI Moat", subtitle: "Beating Gemini & OpenAI", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep3.mp4", chatGoal: "Defensibility Moat", task: "Stress-test the idea. Propose 'Moat' milestones (Data, UX, Distribution). Get agreement." },
-      { id: 4, title: "Execution Plan", subtitle: "Tactical Implementation", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep4.mp4", chatGoal: "7-Day Tactical Sprint", task: "Build a sprint. Propose Daily Deliverables for the next 7 days. Get agreement." },
-      { id: 5, title: "Scale or Pivot", subtitle: "The Final Verdict", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep5.mp4", chatGoal: "Growth Roadmap", task: "Scale logic. Propose 3 major scaling hurdles and how to clear them. Get agreement." }
+      { id: 1, title: "The First Step", subtitle: "Fundraising & Grants", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep1.mp4", chatGoal: "Define Project Goal" },
+      { id: 2, title: "Founder Dynamics", subtitle: "CEO/CTO Roles & Partners", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep2.mp4", chatGoal: "Milestone Sync" },
+      { id: 3, title: "The AI Moat", subtitle: "Beating Gemini & OpenAI", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep3.mp4", chatGoal: "Moat Execution" },
+      { id: 4, title: "Execution Plan", subtitle: "Tactical Implementation", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep4.mp4", chatGoal: "Sprint Sync" },
+      { id: 5, title: "Scale or Pivot", subtitle: "The Final Verdict", url: "https://github.com/Insceneofficial/ai-studio-demo-assets/releases/download/Video/Anish_Ep5.mp4", chatGoal: "Final Launch" }
     ]
   },
   {
@@ -50,106 +57,19 @@ const SERIES_CATALOG = [
     avatars: { Debu: DEBU_AVATAR },
     thumbnail: getSmartImageUrl("https://lh3.googleusercontent.com/d/1BGjtlHgMy4BToZJQ-eOhr-UpH82LOMVh", "deb_v2", 800, 800),
     episodes: [
-      { id: 1, title: "The Visionary Eye", subtitle: "Finding the Lens", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode1_Debu.mp4", chatGoal: "Creative Vision Lock", task: "Propose 3 elements of their 'Cinematic Soul'. Ask for agreement." },
-      { id: 2, title: "The Storyboard", subtitle: "Visual Pacing", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode2_Debu.mp4", chatGoal: "Visual Pacing Roadmap", task: "Propose 3-4 key visual beats for their story. Ask for agreement." },
-      { id: 3, title: "Shadow & Light", subtitle: "Emotional Lighting", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode3_Debu.mp4", chatGoal: "Lighting Design Palette", task: "Propose a specific lighting 'Mood Palette'. Ask for agreement." },
-      { id: 4, title: "The Edit", subtitle: "Final Cut Logic", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode4_Debu.mp4", chatGoal: "Edit Philosophy Lock", task: "Propose 3 rules for their edit room. Ask for agreement." },
-      { id: 5, title: "Premiere Day", subtitle: "Distribution Strategy", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode5_Debu.mp4", chatGoal: "Global Release Plan", task: "Propose 3 phases of distribution. Ask for agreement." }
+      { id: 1, title: "The Visionary Eye", subtitle: "Finding the Lens", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode1_Debu.mp4", chatGoal: "Cinematic Vision" },
+      { id: 2, title: "The Storyboard", subtitle: "Visual Pacing", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode2_Debu.mp4", chatGoal: "Storyboard Check" },
+      { id: 3, title: "Shadow & Light", subtitle: "Emotional Lighting", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode3_Debu.mp4", chatGoal: "Lighting Sync" },
+      { id: 4, title: "The Edit", subtitle: "Final Cut Logic", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode4_Debu.mp4", chatGoal: "Edit Update" },
+      { id: 5, title: "Premiere Day", subtitle: "Distribution Strategy", url: "https://github.com/rajatboss1/DebuTv_videostorange/releases/download/video/Episode5_Debu.mp4", chatGoal: "Market Launch" }
     ]
   }
 ];
 
-const ReelItem: React.FC<{
-  episode: any;
-  series: any;
-  isActive: boolean;
-  onFinished: () => void;
-  onSkipToChat: () => void;
-  onBackToHome: () => void;
-}> = ({ episode, series, isActive, onFinished, onSkipToChat, onBackToHome }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    if (videoRef.current && isActive) {
-      videoRef.current.load(); 
-      videoRef.current.play().catch(() => {});
-    }
-  }, [isActive, episode.url]);
-
-  const handleTimeUpdate = () => {
-    if (videoRef.current) {
-      const p = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-      setProgress(p);
-    }
-  };
-
-  return (
-    <div className="relative h-full w-full bg-black overflow-hidden">
-      <video 
-        ref={videoRef} 
-        src={episode.url} 
-        className="h-full w-full object-cover" 
-        onEnded={onFinished} 
-        onTimeUpdate={handleTimeUpdate}
-        playsInline 
-      />
-      
-      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-black/60 pointer-events-none" />
-      
-      <div className="absolute top-12 left-0 right-0 px-6 z-50 flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <button 
-            onClick={onBackToHome}
-            className="group flex items-center gap-3 bg-black/40 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-full active:scale-95 transition-all"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-4 h-4 text-white"><path d="M15 19l-7-7 7-7" /></svg>
-            <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Home</span>
-          </button>
-          <div className="flex flex-col items-end">
-             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60">Chapter {episode.id}</p>
-             <p className="text-[8px] font-bold text-blue-400 uppercase tracking-widest">Watching Now</p>
-          </div>
-        </div>
-        
-        <div className="h-1 bg-white/20 rounded-full overflow-hidden">
-           <div 
-             className="h-full bg-blue-500 shadow-[0_0_10px_#3b82f6] transition-all duration-300" 
-             style={{ width: `${progress}%` }} 
-           />
-        </div>
-      </div>
-
-      <div className="absolute bottom-12 left-6 right-6 flex flex-col gap-6 animate-slide-up">
-        <div className="flex items-center gap-5">
-          <div className="relative">
-             <div className="absolute -inset-1 bg-blue-500 rounded-full blur opacity-30 animate-pulse" />
-             <img src={series.avatars[series.influencer]} className="relative w-16 h-16 rounded-full border-2 border-white shadow-xl object-cover" />
-          </div>
-          <div className="flex-1">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-1">Mastery Path</p>
-            <h4 className="text-2xl font-black italic uppercase text-white leading-tight tracking-tighter">{episode.title}</h4>
-            <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest mt-1">{episode.subtitle}</p>
-          </div>
-        </div>
-        <button 
-          onClick={onSkipToChat} 
-          className="group relative w-full py-5 rounded-[2.5rem] bg-white overflow-hidden text-black text-[12px] font-black uppercase tracking-[0.3em] shadow-2xl active:scale-95 transition-all"
-        >
-          <div className="absolute inset-0 bg-blue-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-          <span className="relative group-hover:text-white transition-colors duration-300">
-            Skip to {episode.chatGoal}
-          </span>
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const App: React.FC = () => {
   const [isSplash, setIsSplash] = useState(true);
   const [view, setView] = useState<'discover' | 'profile'>('discover');
-  const [profileTab, setProfileTab] = useState<'chapters' | 'goals'>('chapters');
+  const [profileTab, setProfileTab] = useState<'episodes' | 'goals' | 'leaderboard'>('episodes');
   const [selectedSeries, setSelectedSeries] = useState<any>(null);
   const [chatData, setChatData] = useState<any>(null);
   const [activeEpisode, setActiveEpisode] = useState<any>(null);
@@ -158,7 +78,7 @@ const App: React.FC = () => {
     'startup-boy-anish': 1,
     'deb-filmmaker': 1
   });
-  const [userGoals, setUserGoals] = useState<Record<string, EpisodeGoal[]>>({});
+  const [projectGoals, setProjectGoals] = useState<Record<string, ProjectGoal>>({});
   const [streak, setStreak] = useState(3);
   const [rank, setRank] = useState(12);
 
@@ -167,25 +87,71 @@ const App: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const getProg = (id: string) => userProgress[id] || 1;
-
   const handleSeriesSelect = (series: any) => {
     setSelectedSeries(series);
     setView('profile');
-    setProfileTab('chapters');
+    setProfileTab('episodes');
   };
 
-  const openChat = (ep: any) => {
-    setChatData({
-      char: selectedSeries.influencer,
-      intro: `Masterclass Chapter complete. Now, let's execute. Ready for "${ep.chatGoal}"?`,
-      hook: ep.chatGoal,
-      episodeId: ep.id,
-      task: ep.task
-    });
-  };
+  const getProg = (id: string) => userProgress[id] || 1;
+  const currentGoal = selectedSeries ? projectGoals[selectedSeries.id] : null;
 
-  const currentProgPercent = selectedSeries ? (getProg(selectedSeries.id) / selectedSeries.episodes.length) * 100 : 0;
+  const handleChatClose = (goalStr?: string, stepsArr?: string[], completedIds?: string[]) => {
+    const finishedId = chatData.episodeId;
+    setChatData(null);
+    
+    if (goalStr && stepsArr) {
+      setProjectGoals(prev => {
+        const sId = selectedSeries.id;
+        const milestones = stepsArr.map((s, idx) => ({ 
+          id: `m-${idx}`, 
+          text: s, 
+          completed: completedIds?.includes(`m-${idx}`) || false 
+        }));
+        
+        const doneCount = milestones.filter(m => m.completed).length;
+        const progress = Math.round((doneCount / milestones.length) * 100);
+
+        return {
+          ...prev,
+          [sId]: {
+            title: goalStr,
+            milestones,
+            startDate: prev[sId]?.startDate || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            overallProgress: progress
+          }
+        };
+      });
+    } else if (completedIds && selectedSeries) {
+      setProjectGoals(prev => {
+        const sId = selectedSeries.id;
+        const existing = prev[sId];
+        if (!existing) return prev;
+        
+        const newMilestones = existing.milestones.map(m => ({
+          ...m,
+          completed: completedIds.includes(m.id) || m.completed
+        }));
+        
+        const doneCount = newMilestones.filter(m => m.completed).length;
+        const progress = Math.round((doneCount / newMilestones.length) * 100);
+        
+        return {
+          ...prev,
+          [sId]: { ...existing, milestones: newMilestones, overallProgress: progress }
+        };
+      });
+    }
+
+    const currentProg = getProg(selectedSeries.id);
+    if (finishedId === currentProg) {
+      setUserProgress(prev => ({ 
+        ...prev, 
+        [selectedSeries.id]: Math.min(currentProg + 1, selectedSeries.episodes.length) 
+      }));
+      setStreak(s => s + 1);
+    }
+  };
 
   if (isSplash) {
     return (
@@ -196,13 +162,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-black text-white overflow-hidden font-sans selection:bg-blue-500/30">
-      {view === 'profile' && selectedSeries && (
-        <div className="fixed top-0 left-0 w-full h-1 bg-white/10 z-[100]">
-          <div className="h-full bg-blue-500 shadow-[0_0_15px_#3b82f6] transition-all duration-1000" style={{ width: `${currentProgPercent}%` }} />
-        </div>
-      )}
-
+    <div className="flex flex-col h-[100dvh] bg-black text-white overflow-hidden font-sans">
       {view === 'discover' && (
         <main className="flex-1 overflow-y-auto px-6 pt-24 pb-32 z-10 animate-fade-in hide-scrollbar">
            <div className="max-w-md mx-auto space-y-12">
@@ -237,7 +197,7 @@ const App: React.FC = () => {
         <main className="flex-1 overflow-y-auto px-6 pt-16 pb-32 z-10 animate-slide-up hide-scrollbar">
            <div className="max-w-md mx-auto space-y-12">
              <div className="flex justify-between items-center">
-               <button onClick={() => setView('discover')} className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-3xl hover:bg-white/10 transition-colors active:scale-90">
+               <button onClick={() => setView('discover')} className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-3xl">
                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-5 h-5"><path d="M15 19l-7-7 7-7" /></svg>
                </button>
                <div className="px-5 py-2 rounded-full bg-blue-500/10 border border-blue-500/20">
@@ -249,70 +209,68 @@ const App: React.FC = () => {
              <div className="flex gap-4 p-4 bg-white/5 rounded-[2.5rem] border border-white/10 backdrop-blur-3xl shadow-2xl">
                 <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-orange-500/10 border border-orange-500/20 cursor-pointer active:scale-95 transition-all">
                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-orange-500">🔥</span>
+                      <span className="text-orange-500 text-lg">🔥</span>
                       <span className="text-xl font-black italic">{streak}</span>
                    </div>
                    <p className="text-[8px] font-black uppercase tracking-widest text-orange-500/60">STREAK</p>
                 </div>
-                <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-blue-500/10 border border-blue-500/20 cursor-pointer active:scale-95 transition-all">
+                <div onClick={() => setProfileTab('leaderboard')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-blue-500/10 border border-blue-500/20 cursor-pointer active:scale-95 transition-all">
                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-blue-400">🏆</span>
+                      <span className="text-blue-400 text-lg">🏆</span>
                       <span className="text-xl font-black italic">#{rank}</span>
                    </div>
                    <p className="text-[8px] font-black uppercase tracking-widest text-blue-400/60">GLOBAL</p>
                 </div>
                 <div onClick={() => setProfileTab('goals')} className="flex-1 flex flex-col items-center justify-center py-3 rounded-[1.8rem] bg-emerald-500/10 border border-emerald-500/20 cursor-pointer active:scale-95 transition-all">
                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-emerald-400">🎯</span>
-                      <span className="text-xl font-black italic">{Math.round(currentProgPercent)}%</span>
+                      <span className="text-emerald-400 text-lg">🎯</span>
+                      <span className="text-xl font-black italic">{currentGoal ? currentGoal.overallProgress : 0}%</span>
                    </div>
-                   <p className="text-[8px] font-black uppercase tracking-widest text-emerald-400/60">PROGRESS</p>
+                   <p className="text-[8px] font-black uppercase tracking-widest text-emerald-400/60">GOAL</p>
                 </div>
              </div>
 
-             <div className="bg-gradient-to-br from-white/10 to-transparent p-12 rounded-[4.5rem] border border-white/10 shadow-3xl text-center relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 blur-[80px] -mr-24 -mt-24 pointer-events-none" />
+             {/* Influencer Profile */}
+             <div className="bg-gradient-to-br from-white/10 to-transparent p-12 rounded-[4.5rem] border border-white/10 shadow-3xl text-center relative overflow-hidden">
                 <img src={selectedSeries.avatars[selectedSeries.influencer]} className="w-32 h-32 rounded-full mx-auto border-4 border-white mb-6 shadow-4xl object-cover" />
                 <h2 className="text-4xl font-black italic uppercase tracking-tighter mb-1">{selectedSeries.influencer}</h2>
                 <p className="text-[10px] text-white/40 mb-8 font-black uppercase tracking-widest">{selectedSeries.title}</p>
                 <button 
                   onClick={() => setActiveEpisode(selectedSeries.episodes.find((e: any) => e.id === getProg(selectedSeries.id)))}
-                  className="w-full py-6 rounded-[2.5rem] bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-blue-500 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-4"
+                  className="w-full py-6 rounded-[2.5rem] bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-blue-500 hover:text-white transition-all active:scale-95"
                 >
-                  Play Active Chapter
+                  Watch Next Chapter
                 </button>
              </div>
 
+             {/* TABS */}
              <div className="flex bg-white/5 p-1.5 rounded-full border border-white/10">
-                <button 
-                  onClick={() => setProfileTab('chapters')}
-                  className={`flex-1 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${profileTab === 'chapters' ? 'bg-white text-black shadow-lg' : 'text-white/40'}`}
-                >
-                  Chapters
-                </button>
-                <button 
-                  onClick={() => setProfileTab('goals')}
-                  className={`flex-1 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${profileTab === 'goals' ? 'bg-white text-black shadow-lg' : 'text-white/40'}`}
-                >
-                  My Goals
-                </button>
+                {(['episodes', 'goals', 'leaderboard'] as const).map(tab => (
+                  <button 
+                    key={tab}
+                    onClick={() => setProfileTab(tab)}
+                    className={`flex-1 py-4 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${profileTab === tab ? 'bg-white text-black shadow-lg' : 'text-white/40'}`}
+                  >
+                    {tab}
+                  </button>
+                ))}
              </div>
 
-             {profileTab === 'chapters' ? (
-                <div className="space-y-6">
+             {/* TAB CONTENT: Episodes */}
+             {profileTab === 'episodes' && (
+                <div className="space-y-6 animate-fade-in">
                   {selectedSeries.episodes.map((ep: any) => {
                     const isCompleted = ep.id < getProg(selectedSeries.id);
                     const isCurrent = ep.id === getProg(selectedSeries.id);
                     const isLocked = ep.id > getProg(selectedSeries.id);
-
                     return (
                       <div 
                         key={ep.id} 
                         onClick={() => !isLocked && setActiveEpisode(ep)}
-                        className={`group flex items-center gap-6 p-6 rounded-[2.5rem] border transition-all duration-500 relative overflow-hidden ${isCurrent ? 'bg-white/10 border-blue-500/50 scale-[1.02] shadow-2xl' : 'bg-transparent border-white/5'} ${isLocked ? 'opacity-20 grayscale cursor-not-allowed' : 'opacity-100 hover:bg-white/10 cursor-pointer'}`}
+                        className={`group flex items-center gap-6 p-6 rounded-[2.5rem] border transition-all ${isCurrent ? 'bg-white/10 border-blue-500/50 scale-[1.02] shadow-2xl' : 'bg-transparent border-white/5'} ${isLocked ? 'opacity-20 grayscale cursor-not-allowed' : 'opacity-100 hover:bg-white/10 cursor-pointer'}`}
                       >
-                        <div className={`w-14 h-14 rounded-[1.8rem] flex items-center justify-center font-black italic text-2xl border-2 transition-all duration-500 ${isCompleted ? 'bg-blue-500 border-blue-400 text-white shadow-[0_0_10px_#3b82f6]' : isCurrent ? 'border-blue-500 text-blue-400 animate-pulse' : 'border-white/10 text-white/20'}`}>
-                          {isCompleted ? '✓' : isLocked ? '🔒' : ep.id}
+                        <div className={`w-14 h-14 rounded-[1.8rem] flex items-center justify-center font-black italic text-2xl border-2 transition-all ${isCompleted ? 'bg-blue-500 border-blue-400 text-white' : isCurrent ? 'border-blue-500 text-blue-400 animate-pulse' : 'border-white/10 text-white/20'}`}>
+                          {isCompleted ? '✓' : ep.id}
                         </div>
                         <div className="flex-1">
                           <h4 className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isCurrent ? 'text-blue-400' : 'text-white/30'}`}>{ep.subtitle}</h4>
@@ -322,51 +280,87 @@ const App: React.FC = () => {
                     );
                   })}
                 </div>
-             ) : (
-                <div className="space-y-8 animate-fade-in pb-10">
-                  <div className="bg-blue-500/5 border border-blue-500/20 p-8 rounded-[3.5rem] shadow-inner backdrop-blur-md">
-                     <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-8 border-b border-white/10 pb-4">Personal Roadmap</h4>
-                     <div className="relative pl-8 space-y-12 border-l-2 border-white/10">
-                        {selectedSeries.episodes.map((ep: any) => {
-                           const goalData = userGoals[selectedSeries.id]?.find(g => g.epId === ep.id);
-                           const isCompleted = ep.id < getProg(selectedSeries.id);
-                           const isCurrent = ep.id === getProg(selectedSeries.id);
+             )}
 
-                           return (
-                             <div key={ep.id} className="relative">
-                                <div className={`absolute -left-[41px] top-0 w-4 h-4 rounded-full border-2 transition-all duration-700 ${isCompleted ? 'bg-blue-500 border-blue-400 shadow-[0_0_10px_#3b82f6]' : isCurrent ? 'bg-white border-blue-500 animate-pulse' : 'bg-black border-white/20'}`} />
-                                
-                                <div className="flex flex-col gap-4">
-                                  <div className="flex items-center justify-between">
-                                    <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${isCompleted ? 'text-blue-400' : isCurrent ? 'text-white' : 'text-white/20'}`}>
-                                       Chapter {ep.id}: {ep.chatGoal}
-                                    </p>
-                                    {isCompleted && <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-black uppercase tracking-widest">Locked</span>}
-                                  </div>
-                                  
-                                  {goalData ? (
-                                    <div className="space-y-4">
-                                      <div className="bg-white/5 p-5 rounded-[1.5rem] border border-white/5">
-                                        <p className="text-sm font-bold italic text-white/90">"{goalData.goal}"</p>
-                                      </div>
-                                      <div className="grid gap-2 pl-4">
-                                         {goalData.steps.map((step, si) => (
-                                           <div key={si} className="flex items-center gap-3">
-                                              <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                              <p className="text-[11px] font-medium text-white/60">{step}</p>
-                                           </div>
-                                         ))}
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div className="bg-black/20 p-5 rounded-[1.5rem] border border-dashed border-white/10">
-                                      <p className="text-[10px] font-black uppercase tracking-widest text-white/10">Unlock this chapter to set goals</p>
-                                    </div>
-                                  )}
-                                </div>
+             {/* TAB CONTENT: Goals */}
+             {profileTab === 'goals' && (
+                <div className="space-y-8 animate-fade-in pb-12">
+                  <div className="bg-white/5 border border-white/10 p-10 rounded-[4rem] backdrop-blur-3xl shadow-3xl">
+                    <header className="mb-10 text-center border-b border-white/5 pb-8">
+                       <h3 className="text-2xl font-black italic uppercase tracking-tighter text-white mb-2">
+                         {currentGoal ? currentGoal.title : "Your Roadmap"}
+                       </h3>
+                       <div className="flex items-center justify-center gap-4">
+                         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500">Project Status</p>
+                         <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
+                           <div className="h-full bg-blue-500 transition-all duration-700" style={{ width: `${currentGoal ? currentGoal.overallProgress : 0}%` }} />
+                         </div>
+                       </div>
+                    </header>
+                    
+                    {currentGoal ? (
+                      <div className="relative pl-10 space-y-10 border-l-2 border-white/5">
+                        {currentGoal.milestones.map((m) => (
+                          <div key={m.id} className="relative group">
+                             <div className={`absolute -left-[49px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 transition-all duration-500 ${m.completed ? 'bg-emerald-500 border-emerald-400 shadow-[0_0_15px_#10b981]' : 'bg-black border-white/20'}`} />
+                             
+                             <div className={`flex items-center gap-4 p-6 rounded-[2rem] border transition-all ${m.completed ? 'bg-emerald-500/10 border-emerald-500/30 shadow-lg' : 'bg-white/5 border-white/5'}`}>
+                                <p className={`flex-1 text-sm font-bold italic tracking-tight ${m.completed ? 'text-emerald-400' : 'text-white/60'}`}>
+                                  {m.text}
+                                </p>
+                                {m.completed ? (
+                                  <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-500/20 px-3 py-1 rounded-full">Done</span>
+                                ) : (
+                                  <span className="text-[9px] font-black uppercase tracking-widest text-white/20">Pending</span>
+                                )}
                              </div>
-                           );
-                        })}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-20 text-center space-y-6">
+                        <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-dashed border-white/20">
+                          <span className="text-3xl text-white/20">🎯</span>
+                        </div>
+                        <p className="text-[12px] font-black uppercase tracking-[0.4em] text-white/20">No Project Goals Set Yet</p>
+                        <p className="text-xs text-white/40 px-8 leading-relaxed">Finish your first chapter and talk to {selectedSeries.influencer} to lock in your project milestones.</p>
+                      </div>
+                    )}
+
+                    {currentGoal && (
+                       <div className="mt-12 p-6 bg-blue-500/10 border border-blue-500/20 rounded-[2rem] text-center">
+                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Roadmap Sync: Active</p>
+                         <p className="text-[10px] text-white/40 mt-1 uppercase font-bold">Progress updates handled via chat</p>
+                       </div>
+                    )}
+                  </div>
+                </div>
+             )}
+
+             {/* TAB CONTENT: Leaderboard */}
+             {profileTab === 'leaderboard' && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="bg-white/5 border border-white/10 p-8 rounded-[3.5rem]">
+                     <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-8 text-center">Global Performance</h4>
+                     <div className="space-y-4">
+                        {[
+                          { name: 'Rohan.eth', score: 2450, rank: 1, avatar: 'https://i.pravatar.cc/100?u=1', streak: 12 },
+                          { name: 'Sarah_X', score: 2120, rank: 2, avatar: 'https://i.pravatar.cc/100?u=2', streak: 8 },
+                          { name: 'DevKing', score: 1980, rank: 3, avatar: 'https://i.pravatar.cc/100?u=3', streak: 5 },
+                          { name: 'You', score: 1240, rank: rank, avatar: selectedSeries.avatars[selectedSeries.influencer], isMe: true, streak: streak }
+                        ].sort((a,b) => a.rank - b.rank).map((u, i) => (
+                           <div key={i} className={`flex items-center gap-4 p-4 rounded-3xl ${u.isMe ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-white/5'}`}>
+                              <span className="text-xs font-black text-white/30 w-6">{u.rank}</span>
+                              <img src={u.avatar} className="w-10 h-10 rounded-full border border-white/10 object-cover" />
+                              <div className="flex-1">
+                                <p className={`text-sm font-black italic tracking-tight ${u.isMe ? 'text-blue-400' : 'text-white'}`}>{u.name}</p>
+                                <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest">{u.score} Mastery Pts</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-xs font-black text-orange-500">🔥 {u.streak}</p>
+                              </div>
+                           </div>
+                        ))}
                      </div>
                   </div>
                 </div>
@@ -376,22 +370,18 @@ const App: React.FC = () => {
       )}
 
       {activeEpisode && (
-        <div className="fixed inset-0 z-[5000] bg-black animate-fade-in">
-          <ReelItem 
-            episode={activeEpisode} 
-            series={selectedSeries} isActive={true}
-            onFinished={() => { 
-              const ep = activeEpisode;
-              setActiveEpisode(null); 
-              openChat(ep); 
-            }}
-            onSkipToChat={() => { 
-              const ep = activeEpisode;
-              setActiveEpisode(null); 
-              openChat(ep); 
-            }}
-            onBackToHome={() => setActiveEpisode(null)}
-          />
+        <div className="fixed inset-0 z-[5000] bg-black">
+          <div className="relative h-full w-full">
+            <video src={activeEpisode.url} className="h-full w-full object-cover" onEnded={() => { setActiveEpisode(null); setChatData({ char: selectedSeries.influencer, episodeId: activeEpisode.id, hook: activeEpisode.chatGoal }); }} autoPlay playsInline />
+            <div className="absolute top-12 left-6">
+              <button onClick={() => setActiveEpisode(null)} className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="w-5 h-5 text-white"><path d="M15 19l-7-7 7-7" /></svg>
+              </button>
+            </div>
+            <div className="absolute bottom-12 left-6 right-6">
+               <button onClick={() => { setActiveEpisode(null); setChatData({ char: selectedSeries.influencer, episodeId: activeEpisode.id, hook: activeEpisode.chatGoal }); }} className="w-full py-6 rounded-[2.5rem] bg-white text-black text-[12px] font-black uppercase tracking-[0.4em] shadow-2xl">Skip to Coaching Session</button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -399,41 +389,15 @@ const App: React.FC = () => {
         <ChatPanel 
           character={chatData.char} 
           avatar={selectedSeries?.avatars[chatData.char]} 
-          instantGreeting={chatData.intro} 
+          instantGreeting={
+            currentGoal 
+              ? `Roadmap check! How's the "${currentGoal.title}" project coming along? Did you complete anything new?`
+              : `I'm ${chatData.char}. What's your project goal? Let's build a roadmap together.`
+          } 
           initialHook={chatData.hook}
           episodeId={chatData.episodeId}
-          onClose={(goalStr?: string, stepsArr?: string[]) => {
-            const finishedId = chatData.episodeId;
-            setChatData(null);
-            
-            if (goalStr) {
-               setUserGoals(prev => {
-                  const sId = selectedSeries.id;
-                  const current = prev[sId] || [];
-                  const existing = current.findIndex(g => g.epId === finishedId);
-                  const newList = [...current];
-                  const newEntry: EpisodeGoal = { epId: finishedId, goal: goalStr, steps: stepsArr || [] };
-                  if (existing !== -1) newList[existing] = newEntry;
-                  else newList.push(newEntry);
-                  return { ...prev, [sId]: newList };
-               });
-            }
-
-            const nextEp = selectedSeries.episodes.find((e: any) => e.id === finishedId + 1);
-            if (nextEp) {
-              setActiveEpisode(nextEp);
-            }
-          }}
-          onProgressUpdate={() => {
-            const currentProg = getProg(selectedSeries.id);
-            if (chatData.episodeId === currentProg) {
-              setUserProgress(prev => ({ 
-                ...prev, 
-                [selectedSeries.id]: Math.min(currentProg + 1, selectedSeries.episodes.length) 
-              }));
-              setStreak(s => s + 1);
-            }
-          }}
+          existingGoal={currentGoal}
+          onClose={handleChatClose}
         />
       )}
 
